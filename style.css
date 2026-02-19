@@ -1,0 +1,80 @@
+:root {
+    --breath-scale: 1;
+    --shift-x: 0px;
+    --shift-y: 0px;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: "Inter", sans-serif;
+    color: #e6e6e6;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #0f1014;
+  }
+  
+  /* 背景レイヤー */
+  .bg-wrapper {
+    position: fixed;
+    inset: 0;
+    z-index: -3;
+    overflow: hidden;
+  }
+  
+  .background {
+    position: absolute;
+    inset: 0;
+    background-image: url("images/room.jpg");
+    background-size: cover;
+    background-position: 52% 48%;
+    transform: scale(1.05);
+    filter: blur(2.5px) saturate(0.85) contrast(0.97) brightness(0.99);
+    transition: filter 4s ease, transform 6s ease;
+  }
+  
+  .light-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 70% 35%, rgba(255,240,230,0.15), transparent 60%);
+    mix-blend-mode: soft-light;
+    pointer-events: none;
+    transition: opacity 4s ease;
+  }
+  
+  /* グレイン */
+  .grain {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+    opacity: 0.03;
+    mix-blend-mode: overlay;
+  }
+  
+  /* UI */
+  .container {
+    text-align: center;
+    transform: translate(var(--shift-x), var(--shift-y)) scale(var(--breath-scale));
+    transition: transform 1s ease;
+  }
+  
+  .time {
+    font-size: 2rem;
+    letter-spacing: 0.2em;
+    margin-bottom: 0.5rem;
+  }
+  
+  .status {
+    font-size: 0.9rem;
+    opacity: 0.6;
+    letter-spacing: 0.4em;
+  }
+  
