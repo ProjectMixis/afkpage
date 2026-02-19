@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discord UI Replica</title>
+
+<style>
+* {margin:0;padding:0;box-sizing:border-box;font-family:"Segoe UI",sans-serif;}
+
+body {
+    display:flex;
+    height:100vh;
+    background:#36393f;
+    color:#dcddde;
+}
+
+/* サーバーバー */
+.server-bar{
+    width:72px;
+    background:#202225;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:10px 0;
+    gap:12px;
+}
+.server-icon{
+    width:48px;height:48px;
+    border-radius:50%;
+    background:#5865f2;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.2s;
+    overflow: hidden;
+}
+.server-icon:hover{
+    border-radius:16px;
+    background:#4752c4;
+}
+.server-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+}
+
+
+/* チャンネルバー */
+.channel-bar{
+    width:240px;
+    background:#2f3136;
+    display:flex;
+    flex-direction:column;
+    padding:10px;
+}
+.channel-category{
+    font-size:12px;
+    color:#8e9297;
+    margin-top:10px;
+}
+.channel{
+    padding:6px 8px;
+    border-radius:4px;
+    cursor:pointer;
+    margin-top:4px;
+}
+.channel:hover{background:#40444b;}
+.channel.active{
+    background:#393c43;
+    color:white;
+}
+
+/* メイン */
+.main{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+}
+.header{
+    height:48px;
+    border-bottom:1px solid #202225;
+    display:flex;
+    align-items:center;
+    padding:0 20px;
+    font-weight:bold;
+}
+.chat{
+    flex:1;
+    padding:20px;
+    overflow-y:auto;
+}
+.message{
+    margin-bottom:15px;
+}
+.username{
+    font-weight:bold;
+}
+.text{
+    margin-left:10px;
+}
+
+/* メンバーリスト */
+.member-bar{
+    width:240px;
+    background:#2f3136;
+    padding:15px;
+}
+.member{
+    display:flex;
+    align-items:center;
+    margin-top:10px;
+}
+.avatar{
+    width:32px;height:32px;
+    border-radius:50%;
+    background:#5865f2;
+    margin-right:10px;
+    position:relative;
+}
+.status{
+    width:10px;height:10px;
+    border-radius:50%;
+    background:#3ba55c;
+    position:absolute;
+    bottom:0;
+    right:0;
+    border:2px solid #2f3136;
+}
+</style>
+</head>
+
+<body>
+
+<!-- サーバー -->
+<div class="server-bar">
+    <div class="server-icon">
+        <img src="https://i.imgur.com/rir3Hxc.png" alt="discord" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;">
+    </div>
+
+    <div class="server-icon">
+        <img src="https://i.imgur.com/ky0j3LP.png" alt="タコ鯖.2v.Second IAtag" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;">
+    </div>
+    
+    <div class="server-icon">
+        <img src="https://i.imgur.com/mh3jqy8.png" alt="The 3rd Alliance Open Gate   -TAOG-" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;">
+    </div>
+    <div class="server-icon">
+        <img src="https://i.imgur.com/xkN9sbD.png" alt="サーバーを追加" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;">
+    </div>
+</div>
+<!-- チャンネル -->
+<div class="channel-bar">
+    <div class="channel-category">TEXT CHANNELS</div>
+    <div class="channel active" onclick="switchChannel('about')"># about</div>
+    <div class="channel" onclick="switchChannel('hobbies')"># hobbies</div>
+    <div class="channel" onclick="switchChannel('contact')"># contact</div>
+</div>
+
+<!-- メイン -->
+<div class="main">
+    <div class="header" id="channel-name"># about</div>
+    <div class="chat" id="chat">
+
+        <div class="message">
+            <span class="username">YourName</span>
+            <span class="text">こんにちは！自己紹介チャンネルへようこそ。</span>
+        </div>
+
+    </div>
+</div>
+
+<!-- メンバー -->
+<div class="member-bar">
+    <div style="font-size:12px;color:#8e9297;">ONLINE — 2</div>
+
+    <div class="member">
+        <div class="avatar"><div class="status"></div></div>
+        <div>えぐぜちゃん</div>
+    </div>
+
+    <div class="member">
+        <div class="avatar" style="background:#faa61a;">
+            <div class="status"></div>
+        </div>
+        <div>Fibit</div>
+    </div>
+</div>
+
+<script>
+const chats = {
+    about: `
+        <div class="message">
+            <span class="username">えぐぜちゃん</span>
+            <span class="text">Web制作とデザインが好きです。</span>
+        </div>
+        <div class="message">
+            <span class="username">fibit</span>
+            <span class="text">UI再現が得意分野🔥</span>
+        </div>
+    `,
+    hobbies: `
+        <div class="message">
+            <span class="username">えぐぜちゃん</span>
+            <span class="text">ゲーム / 音楽 / コーディング</span>
+        </div>
+    `,
+    contact: `
+        <div class="message">
+            <span class="username">えぐぜちゃん</span>
+            <span class="text">Discord: えぐぜちゃん#0001</span>
+        </div>
+    `
+};
+
+function switchChannel(name){
+    document.getElementById("chat").innerHTML = chats[name];
+    document.getElementById("channel-name").innerText = "# " + name;
+
+    document.querySelectorAll(".channel").forEach(c=>{
+        c.classList.remove("active");
+    });
+    event.target.classList.add("active");
+}
+</script>
+
+</body>
+</html>
